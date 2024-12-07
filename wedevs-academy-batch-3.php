@@ -11,6 +11,10 @@
  * Text Domain: wedevs-academy-batch-3
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    return;
+}
+
 class Academy_Batch_Three {
 
     private static $instance;
@@ -81,8 +85,10 @@ class Academy_Batch_Three {
 
     private function load_classes() {
         require_once AB_THREE_PLUGIN_PATH . 'includes/Admin_Menu.php';
+        require_once AB_THREE_PLUGIN_PATH . 'includes/Custom_Column.php';
 
         new AB_Three_Admin_Menu();
+        new AB_Three\Custom_Column();
     }
 }
 
