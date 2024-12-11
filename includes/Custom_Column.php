@@ -2,8 +2,6 @@
 
 namespace AB_Three;
 
-use function Avifinfo\read;
-
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }

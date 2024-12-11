@@ -29,6 +29,8 @@ class Academy_Batch_Three {
         $this->define_constants();
 
         $this->load_classes();
+
+        register_activation_hook( __FILE__, array( $this, 'register_activation_hook' ) );
     }
 
     public static function get_instance() {
@@ -86,9 +88,30 @@ class Academy_Batch_Three {
     private function load_classes() {
         require_once AB_THREE_PLUGIN_PATH . 'includes/Admin_Menu.php';
         require_once AB_THREE_PLUGIN_PATH . 'includes/Custom_Column.php';
+        require_once AB_THREE_PLUGIN_PATH . 'includes/Post_Type.php';
 
         new AB_Three_Admin_Menu();
         new AB_Three\Custom_Column();
+        new AB_Three\Post_Type();
+    }
+
+    public function register_activation_hook() {
+        $count_posts = get_posts( array(
+            'post_type' => 'book',
+            'fields' => 'ids'
+        ) );
+
+        if ( count( $count_posts ) > 0 ) {
+            return;
+        }
+
+        // Create post.
+        wp_insert_post( array(
+            'post_type' => 'book',
+            'post_title' => 'Auto Post',
+            'post_content' => 'Auto Post content',
+            'post_status' => 'publish',
+        ) );
     }
 }
 
