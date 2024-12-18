@@ -15,6 +15,16 @@ class Post_Type {
 
         add_action( 'book_category_edit_form_fields', array( $this, 'book_category_edit_form_fields' ) );
         add_action( 'edited_book_category', array( $this, 'edited_book_category' ) );
+
+
+        add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+        add_action( 'save_post_book', array( $this, 'save_post_book' ) );
+
+        if ( file_exists( AB_THREE_PLUGIN_PATH . 'lib/CMB2/init.php' ) ) {
+            require_once AB_THREE_PLUGIN_PATH . 'lib/CMB2/init.php';
+        }
+
+        add_action( 'cmb2_admin_init', array( $this, 'cmb2_admin_init' ) );
     }
 
     public function init() {
@@ -81,13 +91,18 @@ class Post_Type {
 
         $terms = wp_get_post_terms( get_the_ID(), 'book_category' );
 
+        $another_title = get_post_meta( get_the_ID(), 'another_title', true );
+        $another_group = get_post_meta( get_the_ID(), 'another_title_group', true );
+
         ob_start();
+        print_r($another_group);
         ?>
             <ul>
                 <?php foreach( $terms as $term ): ?>
                 <li><a href="<?php echo get_term_link( $term, 'book_category' ); ?>"><?php echo $term->name; ?></a></li>
                 <?php endforeach; ?>
             </ul>
+            <h3>Another Title: <?php echo $another_title; ?></h3>
         <?php
         $html = ob_get_clean();
 
@@ -110,5 +125,67 @@ class Post_Type {
 
     public function edited_book_category( $term_id ) {
         update_term_meta( $term_id, 'extra_meta', $_POST['extra_meta'] );
+    }
+
+    public function add_meta_boxes() {
+        add_meta_box(
+            'my-custom-metabox',
+            'Custom Metabox',
+            array( $this, 'my_custom_metabox_callback' ),
+            'book'
+        );
+    }
+
+    public function my_custom_metabox_callback( $post ) {
+        $book_subtitle = get_post_meta( $post->ID, 'book_subtitle', true );
+        ?>
+        <p>
+            <label for="">Subtitle</label>
+            <input type="text" name="book_subtitle" value="<?php echo $book_subtitle; ?>">
+        </p>
+        <?php
+    }
+
+    public function save_post_book( $post_id ) {
+        if ( isset( $_POST['book_subtitle'] ) ) {
+            update_post_meta( $post_id, 'book_subtitle', $_POST['book_subtitle'] );
+        }
+    }
+
+    public function cmb2_admin_init() {
+        $box1 = new_cmb2_box( array(
+            'id' => 'custom-cmb2-box',
+            'title' => 'Custom cmb2 Box',
+            'object_types' => array( 'book' ),
+        ) );
+
+        $box1->add_field( array(
+            'id' => 'another_title',
+            'name' => 'Another Title',
+            'desc' => 'Enter Another Title',
+            'type' => 'text',
+        ) );
+
+        $group_field_id = $box1->add_field( array(
+            'id' => 'another_title_group',
+            'description' => 'Enter Another Title',
+            'type' => 'group',
+        ) );
+
+        $box1->add_group_field( $group_field_id, array(
+            'id' => 'another_title_second',
+            'name' => 'Another Second Title',
+            'desc' => 'Enter Second Another Title',
+            'type' => 'text',
+            'repeatable' => true
+        ) );
+
+        $box1->add_group_field( $group_field_id, array(
+            'id' => 'another_select_second',
+            'name' => 'Another Select',
+            'desc' => 'Enter Second Select',
+            'type' => 'select',
+            'options' => array( 1, 2, 3),
+        ) );
     }
 }
