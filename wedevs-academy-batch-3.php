@@ -89,10 +89,13 @@ class Academy_Batch_Three {
         require_once AB_THREE_PLUGIN_PATH . 'includes/Admin_Menu.php';
         require_once AB_THREE_PLUGIN_PATH . 'includes/Custom_Column.php';
         require_once AB_THREE_PLUGIN_PATH . 'includes/Post_Type.php';
+        require_once AB_THREE_PLUGIN_PATH . 'includes/Book_Reader.php';
 
-        new AB_Three_Admin_Menu();
-        new AB_Three\Custom_Column();
-        new AB_Three\Post_Type();
+        // new AB_Three_Admin_Menu();
+        // new AB_Three\Custom_Column();
+        // new AB_Three\Post_Type();
+
+        new AB_Three\Book_Reader();
     }
 
     public function register_activation_hook() {
