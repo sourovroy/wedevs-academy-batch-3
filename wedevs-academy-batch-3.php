@@ -83,6 +83,7 @@ class Academy_Batch_Three {
 
     private function define_constants() {
         define( 'AB_THREE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+        define( 'AB_THREE_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
     }
 
     private function load_classes() {
@@ -90,12 +91,15 @@ class Academy_Batch_Three {
         require_once AB_THREE_PLUGIN_PATH . 'includes/Custom_Column.php';
         require_once AB_THREE_PLUGIN_PATH . 'includes/Post_Type.php';
         require_once AB_THREE_PLUGIN_PATH . 'includes/Book_Reader.php';
+        require_once AB_THREE_PLUGIN_PATH . 'includes/Enqueue.php';
+        require_once AB_THREE_PLUGIN_PATH . 'includes/Shortcode.php';
 
         // new AB_Three_Admin_Menu();
         // new AB_Three\Custom_Column();
         // new AB_Three\Post_Type();
 
-        new AB_Three\Book_Reader();
+        new AB_Three\Enqueue();
+        new AB_Three\Shortcode();
     }
 
     public function register_activation_hook() {
