@@ -23,8 +23,10 @@ class AB_Three_Admin_Menu {
     public function query_post_callback() {
         $filter_cat = 0;
 
-        if ( isset( $_GET['filter_cat'] ) ) {
-            $filter_cat = $_GET['filter_cat'];
+        $get_page = filter_input( INPUT_GET, 'filter_cat' );
+
+        if ( ! empty( $get_page ) ) {
+            $filter_cat = $get_page;
         }
 
         $args = array(

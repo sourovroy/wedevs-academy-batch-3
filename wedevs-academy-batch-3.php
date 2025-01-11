@@ -93,13 +93,16 @@ class Academy_Batch_Three {
         require_once AB_THREE_PLUGIN_PATH . 'includes/Book_Reader.php';
         require_once AB_THREE_PLUGIN_PATH . 'includes/Enqueue.php';
         require_once AB_THREE_PLUGIN_PATH . 'includes/Shortcode.php';
+        require_once AB_THREE_PLUGIN_PATH . 'includes/Admin_Settings.php';
 
         // new AB_Three_Admin_Menu();
         // new AB_Three\Custom_Column();
         // new AB_Three\Post_Type();
 
-        new AB_Three\Enqueue();
-        new AB_Three\Shortcode();
+        // new AB_Three\Enqueue();
+        // new AB_Three\Shortcode();
+
+        new AB_Three\Admin_Settings();
     }
 
     public function register_activation_hook() {
